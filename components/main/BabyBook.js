@@ -1,11 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export default function Add() {
-  console.log('IN THE ADD VIEW');
+export default function BabyBook() {
   return (
     <View>
-      <Text>THIS IS THE ADD VIEW</Text>
+      <Text>BABYBOOK!!!!</Text>
     </View>
   );
 }

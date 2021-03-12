@@ -8,6 +8,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import HomeScreen from './components/Home';
 import AddScreen from './components/main/Add';
+import WelcomeScreen from './components/auth/Welcome';
+import SignUpScreen from './components/auth/SignUp';
+import LoginScreen from './components/auth/Login';
 
 import * as firebase from 'firebase';
 
@@ -27,23 +30,76 @@ if (firebase.apps.length === 0) {
 
 const Stack = createStackNavigator();
 
-export default function App() {
-  // Need to create a view for users who are not logged in or who do not have an account.
+export class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: false,
+      loaded: false,
+    };
+  }
 
-  // This is the view for logged in users
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name='Home'
-          component={HomeScreen}
-          options={{ title: 'Your Baby Book' }}
-        />
-        <Stack.Screen name='Add' component={AddScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        this.setState({
+          loggedIn: false,
+          loaded: true,
+        });
+      } else {
+        this.setState({
+          loggedIn: true,
+          loaded: true,
+        });
+      }
+    });
+  }
+
+  render() {
+    if (!this.state.loaded) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Text>Loading</Text>
+        </View>
+      );
+    }
+
+    return (
+      <NavigationContainer>
+        {this.state.loggedIn ? (
+          <>
+            <Stack.Navigator initialRouteName='Home'>
+              <Stack.Screen
+                name='Home'
+                component={HomeScreen}
+                options={{ title: 'Your Baby Book' }}
+              />
+              <Stack.Screen
+                name='Add'
+                component={AddScreen}
+                navigation={this.props.navigation}
+              />
+            </Stack.Navigator>
+          </>
+        ) : (
+          <>
+            <Stack.Navigator initialRouteName='Welcome'>
+              <Stack.Screen
+                name='Welcome'
+                component={WelcomeScreen}
+                options={{ title: 'Welcome To Baby Book' }}
+              />
+              <Stack.Screen name='SignUp' component={SignUpScreen} />
+              <Stack.Screen name='Login' component={LoginScreen} />
+            </Stack.Navigator>
+          </>
+        )}
+      </NavigationContainer>
+    );
+  }
 }
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
