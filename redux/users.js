@@ -19,7 +19,7 @@ export const getUser = () => {
       .doc(firebase.auth().currentUser.uid)
       .get()
       .then((snapshot) => {
-        console.log('IN THE GET USER THUNK', snapshot.data());
+        console.log('IN THE GET USER THUNK', JSON.stringify(snapshot.data()));
         if (snapshot.exists) {
           dispatch(gotUser(snapshot.data()));
         } else {

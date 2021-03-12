@@ -8,9 +8,12 @@ require('firebase/firestore');
 require('firebase/storage');
 
 export default function CreatePost(props) {
+  console.log('PROPS', props);
+
   const [caption, setCaption] = React.useState('');
   const [category, setCategory] = React.useState('');
   const [tags, setTags] = React.useState('');
+  const [otherCategory, setOtherCategory] = React.useState('');
 
   const uri = props.route.params.image;
 
@@ -25,14 +28,12 @@ export default function CreatePost(props) {
     const task = firebase.storage().ref().child(path).put(blob);
 
     const taskProgress = (snapshot) => {
-      console.log('SNAPSHOT?', snapshot);
       console.log(`transferred: ${snapshot.bytesTransferred}`);
     };
 
     const taskCompleted = () => {
       task.snapshot.ref.getDownloadURL().then((snapshot) => {
-        savePostData(snapshot);
-        console.log(snapshot);
+        saveDataToDb(snapshot);
       });
     };
     const taskError = (snapshot) => {
@@ -42,6 +43,22 @@ export default function CreatePost(props) {
   };
 
   // Once the image is uploaded to storage, we need to save it to the database with the information from the form.
+
+  const saveDataToDb = (downloadURL) => {
+    firebase
+      .firestore()
+      .collection('posts')
+      .doc(firebase.auth().currentUser.uid)
+      .collection('babyBookPosts')
+      .add({
+        downloadURL,
+        caption,
+        category,
+        tags,
+        creation: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => props.navigation.popToTop());
+  };
 
   return (
     <View>
@@ -73,22 +90,12 @@ export default function CreatePost(props) {
         <TextInput
           style={{ fontSize: 20 }}
           placeholder='Enter Category'
-          onChangeText={(category) => setCategory(category)}
+          onChangeText={(otherCategory) => setOtherCategory(otherCategory)}
         />
       ) : (
         <Text></Text>
       )}
-      {/* <Picker
-        selectedValue={category}
-        style={{ height: 20, width: 200, margin: 0 }}
-        onValueChange={(category, itemIndex) => setCategory(category)}
-      >
-        <Picker.Item label='Special Moments' value='specialMoments' />
-        <Picker.Item label='Birthdays' value='bdays' />
-        <Picker.Item label='Fun with Friends' value='funWithFriends' />
-        <Picker.Item label='Fun with Family' value='funWithFamily' />
-        <Picker.Item label='Other' value='other' />
-      </Picker> */}
+      <Button title='Create Post' onPress={() => uploadImage()} />
     </View>
   );
 }
