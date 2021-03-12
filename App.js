@@ -14,6 +14,7 @@ import AddScreen from './components/main/Add';
 import WelcomeScreen from './components/auth/Welcome';
 import SignUpScreen from './components/auth/SignUp';
 import LoginScreen from './components/auth/Login';
+import CreatePostScreen from './components/main/CreatePost';
 
 import * as firebase from 'firebase';
 
@@ -81,6 +82,12 @@ export class App extends React.Component {
                 <Stack.Screen
                   name='Add'
                   component={AddScreen}
+                  navigation={this.props.navigation}
+                />
+                <Stack.Screen
+                  name='CreatePost'
+                  component={CreatePostScreen}
+                  options={{ title: 'Create Post' }}
                   navigation={this.props.navigation}
                 />
               </Stack.Navigator>
