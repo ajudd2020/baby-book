@@ -6,6 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
 import HomeScreen from './components/Home';
 import AddScreen from './components/main/Add';
 import WelcomeScreen from './components/auth/Welcome';
@@ -65,36 +68,38 @@ export class App extends React.Component {
     }
 
     return (
-      <NavigationContainer>
-        {this.state.loggedIn ? (
-          <>
-            <Stack.Navigator initialRouteName='Home'>
-              <Stack.Screen
-                name='Home'
-                component={HomeScreen}
-                options={{ title: 'Your Baby Book' }}
-              />
-              <Stack.Screen
-                name='Add'
-                component={AddScreen}
-                navigation={this.props.navigation}
-              />
-            </Stack.Navigator>
-          </>
-        ) : (
-          <>
-            <Stack.Navigator initialRouteName='Welcome'>
-              <Stack.Screen
-                name='Welcome'
-                component={WelcomeScreen}
-                options={{ title: 'Welcome To Baby Book' }}
-              />
-              <Stack.Screen name='SignUp' component={SignUpScreen} />
-              <Stack.Screen name='Login' component={LoginScreen} />
-            </Stack.Navigator>
-          </>
-        )}
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          {this.state.loggedIn ? (
+            <>
+              <Stack.Navigator initialRouteName='Home'>
+                <Stack.Screen
+                  name='Home'
+                  component={HomeScreen}
+                  options={{ title: 'Your Baby Book' }}
+                />
+                <Stack.Screen
+                  name='Add'
+                  component={AddScreen}
+                  navigation={this.props.navigation}
+                />
+              </Stack.Navigator>
+            </>
+          ) : (
+            <>
+              <Stack.Navigator initialRouteName='Welcome'>
+                <Stack.Screen
+                  name='Welcome'
+                  component={WelcomeScreen}
+                  options={{ title: 'Welcome To Baby Book' }}
+                />
+                <Stack.Screen name='SignUp' component={SignUpScreen} />
+                <Stack.Screen name='Login' component={LoginScreen} />
+              </Stack.Navigator>
+            </>
+          )}
+        </NavigationContainer>
+      </Provider>
     );
   }
 }

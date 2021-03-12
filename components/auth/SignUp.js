@@ -8,6 +8,7 @@ export default function SignUp({ navigation }) {
   const [babyName, setBabyName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [color, setColor] = React.useState('');
 
   const onSignUp = async () => {
     try {
@@ -48,6 +49,10 @@ export default function SignUp({ navigation }) {
         placeholder='Password'
         secureTextEntry={true}
         onChangeText={(password) => setPassword(password)}
+      />
+      <TextInput
+        placeholder='Color (optional)'
+        onChangeText={(color) => setColor(color)}
       />
       <Button onPress={() => onSignUp()} title='Sign Me Up!' />
     </View>
