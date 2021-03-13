@@ -8,6 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { connect } from 'react-redux';
 import { getUser } from '../redux/users';
+import { getPosts } from '../redux/posts';
 
 import BabyBookScreen from './main/BabyBook';
 
@@ -20,10 +21,12 @@ const Tab = createMaterialBottomTabNavigator();
 export class Home extends React.Component {
   componentDidMount() {
     this.props.getUser();
+    this.props.getPosts();
   }
 
   render() {
     const user = this.props.user;
+    const posts = this.props.posts;
     if (user === undefined) {
       return (
         <View>
@@ -95,12 +98,16 @@ export class Home extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    posts: state.posts,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   getUser: () => dispatch(getUser()),
+  getPosts: () => dispatch(getPosts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

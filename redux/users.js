@@ -19,7 +19,6 @@ export const getUser = () => {
       .doc(firebase.auth().currentUser.uid)
       .get()
       .then((snapshot) => {
-        console.log('IN THE GET USER THUNK', JSON.stringify(snapshot.data()));
         if (snapshot.exists) {
           dispatch(gotUser(snapshot.data()));
         } else {
@@ -36,7 +35,7 @@ const initialState = {};
 function userReducer(state = initialState, action) {
   switch (action.type) {
     case GOT_USER:
-      return action;
+      return action.user;
     default:
       return state;
   }
