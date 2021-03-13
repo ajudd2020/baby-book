@@ -11,6 +11,7 @@ import { getUser } from '../redux/users';
 import { getPosts } from '../redux/posts';
 
 import BabyBookScreen from './main/BabyBook';
+import AddScreen from './main/Add';
 
 const Container = () => {
   return null;
@@ -55,15 +56,8 @@ export class Home extends React.Component {
             }}
           />
           <Tab.Screen
-            name='Add a Picture'
-            component={Container}
-            listeners={({ navigation }) => ({
-              tabPress: (event) => {
-                console.log('CLICKED', navigation);
-                event.preventDefault();
-                navigation.navigate('Add');
-              },
-            })}
+            name='Add'
+            component={AddScreen}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons

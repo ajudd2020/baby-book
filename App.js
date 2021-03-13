@@ -79,11 +79,7 @@ export class App extends React.Component {
                   component={HomeScreen}
                   options={{ title: 'Your Baby Book' }}
                 />
-                <Stack.Screen
-                  name='Add'
-                  component={AddScreen}
-                  navigation={this.props.navigation}
-                />
+
                 <Stack.Screen
                   name='CreatePost'
                   component={CreatePostScreen}
@@ -123,46 +119,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-// return (
-//       <Provider store={store}>
-//         {this.state.loggedIn ? (
-//           <>
-//             <NavigationContainer>
-//               <Stack.Navigator initialRouteName='Home'>
-//                 <Stack.Screen
-//                   name='Home'
-//                   component={HomeScreen}
-//                   options={{ title: 'Your Baby Book' }}
-//                 />
-//                 <Stack.Screen
-//                   name='Add'
-//                   component={AddScreen}
-//                   navigation={this.props.navigation}
-//                 />
-//                 <Stack.Screen
-//                   name='CreatePost'
-//                   component={CreatePostScreen}
-//                   options={{ title: 'Create Post' }}
-//                   navigation={this.props.navigation}
-//                 />
-//               </Stack.Navigator>
-//             </NavigationContainer>
-//           </>
-//         ) : (
-//           <>
-//             <NavigationContainer>
-//               <Stack.Navigator initialRouteName='Welcome'>
-//                 <Stack.Screen
-//                   name='Welcome'
-//                   component={WelcomeScreen}
-//                   options={{ title: 'Welcome To Baby Book' }}
-//                 />
-//                 <Stack.Screen name='SignUp' component={SignUpScreen} />
-//                 <Stack.Screen name='Login' component={LoginScreen} />
-//               </Stack.Navigator>
-//             </NavigationContainer>
-//           </>
-//         )}
-//       </Provider>
-//     );

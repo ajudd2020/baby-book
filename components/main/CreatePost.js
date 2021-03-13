@@ -57,7 +57,7 @@ export default function CreatePost(props) {
         tags,
         creation: firebase.firestore.FieldValue.serverTimestamp(),
       })
-      .then(() => props.navigation.popToTop());
+      .then(() => props.navigation.navigate('Baby Book'));
   };
 
   return (
