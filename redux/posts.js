@@ -1,13 +1,41 @@
+const posts = [
+  {
+    caption: 'Maecenas mus. Quam litora congue sollicitudin lore',
+    category: 'Birthdays',
+    creation: {
+      nanoseconds: 871000001,
+      seconds: 1615608546,
+    },
+    downloadURL: 'https://picsum.photos/200',
+    tags: 'Fun, Happy, Friends, Family',
+  },
+  {
+    caption: 'Posuere libero pulvinar aliquet vel morbi. Nibh eg',
+    category: 'Milestones',
+    creation: {
+      nanoseconds: 871000002,
+      seconds: 1615608546,
+    },
+    downloadURL: 'https://picsum.photos/200',
+    tags: 'Walking, Talking, Running',
+  },
+];
+
 import firebase from 'firebase';
 import 'firebase/firestore';
 
 // ACTION CONSTANTS
 const GOT_POSTS = 'GOT_POSTS';
+const CLEAR_POSTS = 'CLEAR_POSTS';
 
 // ACTION CREATORS
 export const gotPosts = (posts) => ({
   type: GOT_POSTS,
   posts,
+});
+
+export const clearPosts = () => ({
+  type: CLEAR_POSTS,
 });
 
 // THUNKS
@@ -19,6 +47,7 @@ export const getPosts = () => {
       .collection('posts')
       .doc(firebase.auth().currentUser.uid)
       .collection('babyBookPosts')
+      .orderBy('creation')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -28,6 +57,7 @@ export const getPosts = () => {
           dispatch(gotPosts(postsArr));
         }
       });
+    // dispatch(gotPosts(posts));
   };
 };
 
@@ -39,6 +69,8 @@ function postReducer(state = initialState, action) {
   switch (action.type) {
     case GOT_POSTS:
       return action.posts;
+    case CLEAR_POSTS:
+      return [];
     default:
       return state;
   }
@@ -46,18 +78,5 @@ function postReducer(state = initialState, action) {
 
 export default postReducer;
 
-// const saveDataToDb = (downloadURL) => {
-//   firebase
-//     .firestore()
-//     .collection('posts')
-//     .doc(firebase.auth().currentUser.uid)
-//     .collection('babyBookPosts')
-//     .add({
-//       downloadURL,
-//       caption,
-//       category,
-//       tags,
-//       creation: firebase.firestore.FieldValue.serverTimestamp(),
-//     })
-//     .then(() => props.navigation.popToTop());
-// };
+// to order:
+// .orderBy('creation')

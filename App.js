@@ -10,7 +10,6 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 
 import HomeScreen from './components/Home';
-import AddScreen from './components/main/Add';
 import WelcomeScreen from './components/auth/Welcome';
 import SignUpScreen from './components/auth/SignUp';
 import LoginScreen from './components/auth/Login';
@@ -42,7 +41,6 @@ export class App extends React.Component {
       loaded: false,
     };
   }
-
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
@@ -77,7 +75,16 @@ export class App extends React.Component {
                 <Stack.Screen
                   name='Home'
                   component={HomeScreen}
-                  options={{ title: 'Your Baby Book' }}
+                  options={{
+                    title: `My Baby Book`,
+                    headerStyle: {
+                      backgroundColor: '#389683',
+                    },
+                    headerTitleStyle: {
+                      color: '#EDF5E1',
+                    },
+                    backgroundColor: '#EDF5E1',
+                  }}
                 />
 
                 <Stack.Screen
@@ -96,10 +103,44 @@ export class App extends React.Component {
                 <Stack.Screen
                   name='Welcome'
                   component={WelcomeScreen}
-                  options={{ title: 'Welcome To Baby Book' }}
+                  options={{
+                    title: 'Welcome To Baby Book',
+                    headerStyle: {
+                      backgroundColor: '#389683',
+                    },
+                    headerTitleStyle: {
+                      color: '#EDF5E1',
+                    },
+                    headerTintColor: 'red',
+                    backgroundColor: '#EDF5E1',
+                  }}
                 />
-                <Stack.Screen name='SignUp' component={SignUpScreen} />
-                <Stack.Screen name='Login' component={LoginScreen} />
+                <Stack.Screen
+                  name='SignUp'
+                  component={SignUpScreen}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: '#389683',
+                    },
+                    headerTitleStyle: {
+                      color: '#EDF5E1',
+                    },
+                    headerTintColor: '#EDF5E1',
+                  }}
+                />
+                <Stack.Screen
+                  name='Login'
+                  component={LoginScreen}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: '#389683',
+                    },
+                    headerTitleStyle: {
+                      color: '#EDF5E1',
+                    },
+                    headerTintColor: '#EDF5E1',
+                  }}
+                />
               </Stack.Navigator>
             </NavigationContainer>
           </>
@@ -114,7 +155,7 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EDF5E1',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -8,7 +8,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { connect } from 'react-redux';
 import { getUser } from '../redux/users';
+import { clearUser } from '../redux/users';
 import { getPosts } from '../redux/posts';
+import { clearPosts } from '../redux/posts';
 
 import BabyBookScreen from './main/BabyBook';
 import AddScreen from './main/Add';
@@ -39,8 +41,8 @@ export class Home extends React.Component {
       <>
         <Tab.Navigator
           initialRouteName='Baby Book'
-          activeColor='#e91e63'
-          barStyle={{ backgroundColor: 'aqua' }}
+          activeColor='#EDF5E1'
+          barStyle={{ backgroundColor: '#389683' }}
         >
           <Tab.Screen
             name='Baby Book'
@@ -72,7 +74,9 @@ export class Home extends React.Component {
             name='Logout'
             component={Container}
             listeners={() => ({
-              tabPress: () => {
+              tabPress: async () => {
+                await this.props.clearUser();
+                await this.props.clearPosts();
                 firebase.auth().signOut();
               },
             })}
@@ -102,6 +106,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   getUser: () => dispatch(getUser()),
   getPosts: () => dispatch(getPosts()),
+  clearUser: () => dispatch(clearUser()),
+  clearPosts: () => dispatch(clearPosts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

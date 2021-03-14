@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import {
+  Button,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import firebase from 'firebase';
 import 'firebase/firestore';
 
@@ -31,30 +40,74 @@ export default function SignUp({ navigation }) {
   };
 
   return (
-    <View>
-      <Text>This is the signup page!</Text>
-      <TextInput
-        placeholder='Your Name'
-        onChangeText={(name) => setName(name)}
-      />
-      <TextInput
-        placeholder="Your Baby's Name"
-        onChangeText={(babyName) => setBabyName(babyName)}
-      />
-      <TextInput
-        placeholder='Your Email'
-        onChangeText={(email) => setEmail(email)}
-      />
-      <TextInput
-        placeholder='Password'
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
-      />
-      <TextInput
-        placeholder='Color (optional)'
-        onChangeText={(color) => setColor(color)}
-      />
-      <Button onPress={() => onSignUp()} title='Sign Me Up!' />
+    <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.main} behavior='padding' enabled>
+        <Text style={styles.title}>
+          Fill out the form to create your Baby Book!
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Your Name'
+          onChangeText={(name) => setName(name)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Your Baby's Name"
+          onChangeText={(babyName) => setBabyName(babyName)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder='Your Email'
+          onChangeText={(email) => setEmail(email)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder='Password'
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder='Color (optional)'
+          onChangeText={(color) => setColor(color)}
+        />
+        <Button
+          color='#04386C'
+          onPress={() => onSignUp()}
+          title='Sign Me Up!'
+        />
+      </KeyboardAvoidingView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EDF5E1',
+    borderWidth: 1,
+  },
+  title: {
+    fontSize: 20,
+    marginLeft: 100,
+    marginRight: 100,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    height: 30,
+    padding: 5,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 5,
+    borderRadius: 5,
+  },
+});

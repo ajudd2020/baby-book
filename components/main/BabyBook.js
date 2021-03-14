@@ -3,67 +3,55 @@ import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { getPosts } from '../../redux/posts';
 
-// export function BabyBook(props) {
-//   const [posts, setPosts] = React.useState([]);
+import { useFocusEffect } from '@react-navigation/native';
 
-//   React.useEffect(() => {
-//     setPosts(props.posts);
-//     console.log('POSTS IN USE EFFECT', posts);
-//   }, [props.posts]);
-// }
+export function BabyBook(props) {
+  const [posts, setPosts] = React.useState([]);
 
-export class BabyBook extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      posts: [],
-    };
-  }
-  componentDidMount() {
-    console.log('RUNNING');
+  useFocusEffect(
+    React.useCallback(() => {
+      props.getPosts();
+    }, [])
+  );
 
-    // console.log('POSTS??', this.props.posts);
-    this.setState({ posts: this.props.posts });
-  }
+  // console.log(props.posts[0].creation.toDate().toString());
 
-  componentDidUpdate(prevProps) {
-    console.log('UPDATE');
-    if (prevProps.posts < this.props.posts) {
-      console.log('SOMETHIHNG HAS BEEN ADDED');
-      this.setState({ posts: this.props.posts });
-    }
-    // console.log('UPDATE?', prevProps, 'NOW', this.props);
-  }
-  render() {
-    console.log('POSTS IN BABY BOOK?', this.props.posts);
-
-    return (
-      <ScrollView>
-        <View>
-          {this.props.posts.length > 0 ? (
-            this.props.posts.map((post) => {
-              console.log('POST', post);
-              return (
-                <View key={post.creation} style={styles.entryBox}>
-                  <Image
-                    source={{
-                      uri:
-                        'https://i.picsum.photos/id/508/200/300.jpg?hmac=h7es7XtWndmLEtkzgE3VR1IHXLsLzKplxL_77_YNTGo',
-                    }}
-                    style={{ width: 200, height: 200 }}
-                  />
-                  <Text>{post.caption}</Text>
+  return (
+    <ScrollView>
+      <View styles={styles.main}>
+        {props.posts.length > 0 ? (
+          props.posts.map((post) => {
+            return (
+              <View key={post.caption} style={styles.entryBox}>
+                <Image
+                  source={{
+                    uri: post.downloadURL,
+                  }}
+                  style={styles.image}
+                />
+                <View style={styles.content}>
+                  <Text style={styles.caption}>{post.caption}</Text>
+                  <Text style={styles.date}>
+                    {post.creation.toDate().toString().slice(0, 25)}
+                  </Text>
+                  {/* <Text style={styles.date}>
+                    Date: {new Date().toString().slice(0, 25)}
+                  </Text> */}
+                  <Text style={styles.category}>Category: {post.category}</Text>
                 </View>
-              );
-            })
-          ) : (
-            <Text>Hi</Text>
-          )}
-        </View>
-      </ScrollView>
-    );
-  }
+              </View>
+            );
+          })
+        ) : (
+          <View>
+            <Text style={styles.empty}>No Posts Yet!</Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
+  );
 }
+// }
 const mapStateToProps = (state) => {
   return {
     user: state.user,
@@ -81,5 +69,33 @@ const styles = StyleSheet.create({
   entryBox: {
     flexDirection: 'row',
     borderWidth: 1,
+    margin: 5,
+    borderRadius: 5,
+  },
+  caption: {
+    textAlign: 'center',
+  },
+  content: {
+    flex: 1,
+    flexShrink: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+  },
+  date: {
+    fontSize: 8,
+  },
+  category: {
+    fontSize: 10,
+  },
+  image: {
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
+    width: 200,
+    height: 200,
+  },
+  empty: {
+    textAlign: 'center',
+    margin: 50,
   },
 });

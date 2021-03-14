@@ -8,8 +8,6 @@ require('firebase/firestore');
 require('firebase/storage');
 
 export default function CreatePost(props) {
-  console.log('PROPS', props);
-
   const [caption, setCaption] = React.useState('');
   const [category, setCategory] = React.useState('');
   const [tags, setTags] = React.useState('');
@@ -55,6 +53,7 @@ export default function CreatePost(props) {
         caption,
         category,
         tags,
+        otherCategory,
         creation: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => props.navigation.navigate('Baby Book'));
@@ -64,11 +63,13 @@ export default function CreatePost(props) {
     <View>
       <Image source={{ uri: uri }} style={{ width: 200, height: 200 }} />
       <TextInput
+        maxLength={50}
         style={{ fontSize: 20 }}
         placeholder='Write a caption...'
         onChangeText={(caption) => setCaption(caption)}
       />
       <TextInput
+        maxLength={50}
         style={{ fontSize: 20 }}
         placeholder='Tags seperated with commas'
         onChangeText={(tags) => setTags(tags)}
