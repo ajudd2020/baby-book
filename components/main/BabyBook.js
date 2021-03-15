@@ -14,8 +14,6 @@ export function BabyBook(props) {
     }, [])
   );
 
-  // console.log(props.posts[0].creation.toDate().toString());
-
   return (
     <ScrollView style={styles.container}>
       <View>
