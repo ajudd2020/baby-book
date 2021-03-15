@@ -17,8 +17,8 @@ export function BabyBook(props) {
   // console.log(props.posts[0].creation.toDate().toString());
 
   return (
-    <ScrollView>
-      <View styles={styles.main}>
+    <ScrollView style={styles.container}>
+      <View>
         {props.posts.length > 0 ? (
           props.posts.map((post) => {
             return (
@@ -97,5 +97,8 @@ const styles = StyleSheet.create({
   empty: {
     textAlign: 'center',
     margin: 50,
+  },
+  container: {
+    backgroundColor: '#EDF5E1',
   },
 });

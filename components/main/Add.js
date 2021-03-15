@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Image, Text, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, View } from 'react-native';
 
 import * as ImagePicker from 'expo-image-picker';
 
@@ -38,7 +38,7 @@ export default function Add(props) {
   if (image) {
     console.log('IMAGE?', image);
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.container}>
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
         <Button title='Pick a different image' onPress={pickImage} />
         <Button
@@ -52,8 +52,17 @@ export default function Add(props) {
   }
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.container}>
       <Button title='Pick an image from camera roll' onPress={pickImage} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#EDF5E1',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

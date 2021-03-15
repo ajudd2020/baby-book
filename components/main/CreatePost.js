@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 // import { Picker, SafeAreaView } from '@react-native-picker/picker';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -12,6 +21,9 @@ export default function CreatePost(props) {
   const [category, setCategory] = React.useState('');
   const [tags, setTags] = React.useState('');
   const [otherCategory, setOtherCategory] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  // React.useEffect();
 
   const uri = props.route.params.image;
 
@@ -24,13 +36,14 @@ export default function CreatePost(props) {
     const res = await fetch(uri);
     const blob = await res.blob();
     const task = firebase.storage().ref().child(path).put(blob);
-
+    setLoading(true);
     const taskProgress = (snapshot) => {
       console.log(`transferred: ${snapshot.bytesTransferred}`);
     };
 
     const taskCompleted = () => {
       task.snapshot.ref.getDownloadURL().then((snapshot) => {
+        setLoading(false);
         saveDataToDb(snapshot);
       });
     };
@@ -59,61 +72,118 @@ export default function CreatePost(props) {
       .then(() => props.navigation.navigate('Baby Book'));
   };
 
+  console.log('LOADING', loading);
+
   return (
-    <View>
-      <Image source={{ uri: uri }} style={{ width: 200, height: 200 }} />
-      <TextInput
-        maxLength={50}
-        style={{ fontSize: 20 }}
-        placeholder='Write a caption...'
-        onChangeText={(caption) => setCaption(caption)}
-      />
-      <TextInput
-        maxLength={50}
-        style={{ fontSize: 20 }}
-        placeholder='Tags seperated with commas'
-        onChangeText={(tags) => setTags(tags)}
-      />
-      <Text style={{ fontSize: 20 }}>Category:</Text>
-      <RNPickerSelect
-        placeholder={{ label: 'Select a Category', value: null }}
-        style={customPickerStyles}
-        onValueChange={(value) => setCategory(value)}
-        items={[
-          { label: 'Special Moments', value: 'specialMoments' },
-          { label: 'Birthdays', value: 'bdays' },
-          { label: 'Fun with Friends', value: 'funWithFriends' },
-          { label: 'Fun with Family', value: 'funWithFamily' },
-          { label: 'Other', value: 'other' },
-        ]}
-      />
-      {category === 'other' ? (
-        <TextInput
-          style={{ fontSize: 20 }}
-          placeholder='Enter Category'
-          onChangeText={(otherCategory) => setOtherCategory(otherCategory)}
-        />
-      ) : (
-        <Text></Text>
-      )}
-      <Button title='Create Post' onPress={() => uploadImage()} />
+    <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior='padding'
+        enabled
+        keyboardVerticalOffset={100}
+      >
+        {loading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator visible={loading} textContent={'Loading...'} />
+          </View>
+        ) : (
+          <View style={styles.center}>
+            <Image source={{ uri: uri }} style={styles.image} />
+            <TextInput
+              maxLength={50}
+              style={styles.input}
+              placeholder='Write a caption...'
+              onChangeText={(caption) => setCaption(caption)}
+            />
+            <TextInput
+              maxLength={50}
+              style={styles.input}
+              placeholder='Tags seperated with commas'
+              onChangeText={(tags) => setTags(tags)}
+            />
+            <RNPickerSelect
+              placeholder={{ label: 'Select a Category', value: null }}
+              style={customPickerStyles}
+              onValueChange={(value) => setCategory(value)}
+              items={[
+                { label: 'Special Moments', value: 'specialMoments' },
+                { label: 'Birthdays', value: 'bdays' },
+                { label: 'Fun with Friends', value: 'funWithFriends' },
+                { label: 'Fun with Family', value: 'funWithFamily' },
+                { label: 'Other', value: 'other' },
+              ]}
+            />
+            {category === 'other' ? (
+              <TextInput
+                style={styles.input}
+                placeholder='Enter Category'
+                onChangeText={(otherCategory) =>
+                  setOtherCategory(otherCategory)
+                }
+              />
+            ) : (
+              <Text></Text>
+            )}
+            <Button
+              color='#04386C'
+              title='Create Post'
+              onPress={() => uploadImage()}
+            />
+          </View>
+        )}
+      </KeyboardAvoidingView>
     </View>
   );
 }
 
 const customPickerStyles = StyleSheet.create({
   inputIOS: {
-    fontSize: 14,
+    textAlign: 'center',
+    fontSize: 20,
     paddingVertical: 10,
     paddingHorizontal: 12,
     color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 5,
   },
   inputAndroid: {
     fontSize: 14,
     paddingHorizontal: 10,
     paddingVertical: 8,
     color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+});
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: 30,
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EDF5E1',
+    flexGrow: 1,
+  },
+  center: {
+    alignItems: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    fontSize: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    width: 300,
+    borderRadius: 5,
+    margin: 5,
+  },
+  image: {
+    margin: 10,
+    width: 200,
+    height: 200,
   },
 });

@@ -90,7 +90,16 @@ export class App extends React.Component {
                 <Stack.Screen
                   name='CreatePost'
                   component={CreatePostScreen}
-                  options={{ title: 'Create Post' }}
+                  options={{
+                    title: 'Create Post',
+                    headerStyle: {
+                      backgroundColor: '#389683',
+                    },
+                    headerTitleStyle: {
+                      color: '#EDF5E1',
+                    },
+                    headerTintColor: '#EDF5E1',
+                  }}
                   navigation={this.props.navigation}
                 />
               </Stack.Navigator>
@@ -111,8 +120,7 @@ export class App extends React.Component {
                     headerTitleStyle: {
                       color: '#EDF5E1',
                     },
-                    headerTintColor: 'red',
-                    backgroundColor: '#EDF5E1',
+                    headerTintColor: '#EDF5E1',
                   }}
                 />
                 <Stack.Screen

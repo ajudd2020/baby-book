@@ -27,6 +27,11 @@ export class Home extends React.Component {
     this.props.getPosts();
   }
 
+  componentWillUnmount() {
+    this.props.clearUser();
+    this.props.clearPosts();
+  }
+
   render() {
     const user = this.props.user;
     const posts = this.props.posts;
@@ -75,8 +80,6 @@ export class Home extends React.Component {
             component={Container}
             listeners={() => ({
               tabPress: async () => {
-                await this.props.clearUser();
-                await this.props.clearPosts();
                 firebase.auth().signOut();
               },
             })}
