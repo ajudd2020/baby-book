@@ -9,6 +9,8 @@ Thank you for checking out my react-native firebase application. I built this ap
 
 Of course, the main language used is JavaScript.
 
+Link to video walk through: https://youtu.be/vCTy6XfBFbc
+
 ## Why Baby Book?
 
 When we were challenged to come up with an app that we would actually use, I instantly thought of this idea. We had three days to investigate a new technology and implement it into something we were interested in.
